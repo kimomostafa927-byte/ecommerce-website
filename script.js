@@ -48,6 +48,67 @@ localStorage.setItem("northline-cart", JSON.stringify(cart));
 
   panel.querySelector(".close-cart").addEventListener("click", () => {
     panel.classList.remove("open");
+    
+// Checkout button
+if (cart.length > 0) {
+  const checkout = document.createElement("button");
+
+  checkout.className = "add-to-cart";
+  checkout.textContent = "PROCEED TO CHECKOUT";
+
+  panel.appendChild(checkout);
+
+  checkout.addEventListener("click", () => {
+    panel.innerHTML = `
+      <button class="close-cart">×</button>
+      <h2>Checkout</h2>
+
+      <form id="checkout-form">
+        <input name="name" placeholder="Full Name" required
+          style="width:100%;padding:13px;margin:8px 0;box-sizing:border-box">
+
+        <input name="email" type="email" placeholder="Email Address" required
+          style="width:100%;padding:13px;margin:8px 0;box-sizing:border-box">
+
+        <input name="phone" type="tel" placeholder="Phone Number" required
+          style="width:100%;padding:13px;margin:8px 0;box-sizing:border-box">
+
+        <textarea name="address" placeholder="Delivery Address" required
+          style="width:100%;padding:13px;margin:8px 0;box-sizing:border-box"></textarea>
+
+        <h3>Order Total: $${total}</h3>
+
+        <button class="add-to-cart" type="submit">
+          PLACE ORDER
+        </button>
+      </form>
+    `;
+
+    panel.querySelector(".close-cart").onclick = () => {
+      panel.classList.remove("open");
+    };
+
+    panel.querySelector("#checkout-form").addEventListener("submit", (e) => {
+      e.preventDefault();
+
+      const customer = Object.fromEntries(new FormData(e.target));
+
+      panel.innerHTML = `
+        <h2>Thank You!</h2>
+        <p>Your order has been placed successfully.</p>
+        <p>Thank you, ${customer.name}.</p>
+        <p>Order Total: $${total}</p>
+        <button class="add-to-cart" onclick="location.reload()">
+          CONTINUE SHOPPING
+        </button>
+      `;
+
+      cart = [];
+      localStorage.setItem("northline-cart", JSON.stringify(cart));
+    });
+  });
+}
+
   });
 
   const itemsContainer = panel.querySelector(".cart-items");
