@@ -2,7 +2,7 @@
 const products = document.querySelectorAll(".product");
 const cartButton = document.querySelector(".cart");
 
-let cart = [];
+let cart = JSON.parse(localStorage.getItem("northline-cart")) || [];
 
 
 // Add search field
@@ -38,7 +38,7 @@ document.body.appendChild(panel);
 function renderCart() {
   let total = 0;
   let count = 0;
-
+localStorage.setItem("northline-cart", JSON.stringify(cart));
   panel.innerHTML = `
     <button class="close-cart" aria-label="Close cart">×</button>
     <h2>Your Shopping Bag</h2>
